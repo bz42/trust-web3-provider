@@ -101,10 +101,14 @@ public struct TrustWeb3Provider {
             trustwallet.postMessage = (jsonString) => {
                 webkit.messageHandlers._tw_.postMessage(jsonString)
             };
-
+            
+            trustwallet.ethereum.isMetaMask = true;
+            trustwallet.ethereum.isTrust = false;
             window.ethereum = trustwallet.ethereum;
             window.keplr = trustwallet.cosmos;
             window.aptos = trustwallet.aptos;
+            trustwallet.solana.isPhantom = true;
+            window.solana = trustwallet.solana;
 
             const getDefaultCosmosProvider = (chainId) => {
                 return trustwallet.cosmos.getOfflineSigner(chainId);
