@@ -17,7 +17,8 @@ let package = Package(
             dependencies: [],
             path: "dist",
             resources: [
-                .process("trust-min.js", localization: .none)
+                .process("trust-min.js", localization: .none),
+                .process("wssol-min.js", localization: .none)
             ]
         )
     ]

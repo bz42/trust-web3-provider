@@ -55,23 +55,22 @@ public struct TrustWeb3Provider {
     }
 
     private class dummy {}
-    private let filename = "trust-min"    
     public static let scriptHandlerName = "_tw_"
     public let config: Config
 
-    public var providerJsUrl: URL {
-#if COCOAPODS
-        let bundle = Bundle(for: TrustWeb3Provider.dummy.self)
-        let bundleURL = bundle.resourceURL?.appendingPathComponent("TrustWeb3Provider.bundle")
-        let resourceBundle = Bundle(url: bundleURL!)!
-        return resourceBundle.url(forResource: filename, withExtension: "js")!
-#else
-        return Bundle.module.url(forResource: filename, withExtension: "js")!
-#endif
-    }
-
     public var providerScript: WKUserScript {
+        let providerJsUrl = {
+            return Bundle.module.url(forResource: "trust-min", withExtension: "js")!
+        }()
         let source = try! String(contentsOf: providerJsUrl)
+        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }
+    
+    public var walletStandardScript: WKUserScript {
+        let walletStandardJsUrl = {
+            return Bundle.module.url(forResource: "wssol-min", withExtension: "js")!
+        }()
+        let source = try! String(contentsOf: walletStandardJsUrl)
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }
 
@@ -108,15 +107,16 @@ public struct TrustWeb3Provider {
             window.keplr = trustwallet.cosmos;
             window.aptos = trustwallet.aptos;
             trustwallet.solana.isPhantom = true;
-            window.solana = trustwallet.solana;
+            //window.solana = trustwallet.solana;
 
-            const getDefaultCosmosProvider = (chainId) => {
-                return trustwallet.cosmos.getOfflineSigner(chainId);
+            wsInjections.Setup(trustwallet.solana);
+            try {
+                Object.defineProperty(window, 'awsWSWallet', { value: awsWSWallet });
             }
-
-            window.getOfflineSigner = getDefaultCosmosProvider;
-            window.getOfflineSignerOnlyAmino = getDefaultCosmosProvider;
-            window.getOfflineSignerAuto = getDefaultCosmosProvider;
+            catch (error) {
+                console.error(error);
+            }
+            console.log("inject wallet");
         })();
         """
         return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
