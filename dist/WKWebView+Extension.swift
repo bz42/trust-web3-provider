@@ -21,23 +21,28 @@ public extension WKWebView {
 }
 
 public extension TypeWrapper where T == WKWebView {
-    func set(network: String, address: String) {
+    func set(network: ProviderNetwork, address: String) {
         let script = String(format: "trustwallet.\(network).setAddress(\"%@\");", address.lowercased())
         value.evaluateJavaScript(script)
     }
 
-    func set(config: TrustWeb3Provider.Config) {
-        let script = """
-        var config = {
-            ethereum: {
-                address: "\(config.ethereum.address)",
-                chainId: \(config.ethereum.chainId),
-                rpcUrl: "\(config.ethereum.rpcUrl)"
-            }
-        };
-        ethereum.setConfig(config);
-        """
-        value.evaluateJavaScript(script)
+    func set(network: ProviderNetwork, config: TrustWeb3Provider.Config) {
+        switch network {
+        case .ethereum:
+            let script = """
+            var config = {
+                ethereum: {
+                    address: "\(config.ethereum.address)",
+                    chainId: \(config.ethereum.chainId),
+                    rpcUrl: "\(config.ethereum.rpcUrl)"
+                }
+            };
+            ethereum.setConfig(config);
+            """
+            value.evaluateJavaScript(script)
+        case .solana:
+            break
+        }
     }
 
     func emitChange(chainId: Int) {
