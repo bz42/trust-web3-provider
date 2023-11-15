@@ -50,6 +50,16 @@ public extension TypeWrapper where T == WKWebView {
         let script = String(format: "trustwallet.ethereum.emitChainChanged(\"%@\");", string)
         value.evaluateJavaScript(script)
     }
+    
+    func emitAccount(address: String?) {
+        if let address {
+            let script = String(format: "trustwallet.ethereum.emitAccountChanged(\"%@\");", address)
+            value.evaluateJavaScript(script)
+        } else {
+            let script = "trustwallet.ethereum.emitAccountChanged(null);"
+            value.evaluateJavaScript(script)
+        }
+    }
 
     func send(network: ProviderNetwork, error: String, to id: Int64) {
         let script = String(format: "trustwallet.\(network.rawValue).sendError(%ld, \"%@\")", id, error)

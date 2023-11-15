@@ -225,7 +225,14 @@ class TrustWeb3Provider extends BaseProvider {
 
   emitChainChanged(chainId) {
     this.emit("chainChanged", chainId);
-    this.emit("networkChanged", chainId);
+  }
+    
+  emitAccountChanged(account) {
+      if (account !== null) {
+          this.emit("accountsChanged", [account]);
+      } else {
+          this.emit("accountsChanged", []);
+      }
   }
 
   eth_accounts() {
