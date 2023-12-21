@@ -60,6 +60,16 @@ public extension TypeWrapper where T == WKWebView {
             value.evaluateJavaScript(script)
         }
     }
+    
+    func sendEvm(error: EthWalletError, to id: Int64) {
+        let script = "trustwallet.\(ProviderNetwork.ethereum.rawValue).sendRpcError(\(id), \(error.code), \"\(error.message)\")"
+        value.evaluateJavaScript(script)
+    }
+    
+    func sendSol(error: SolWalletError, to id: Int64) {
+        let script = "trustwallet.\(ProviderNetwork.solana.rawValue).sendRpcError(\(id), \(error.code), \"\(error.message)\")"
+        value.evaluateJavaScript(script)
+    }
 
     func send(network: ProviderNetwork, error: String, to id: Int64) {
         let script = String(format: "trustwallet.\(network.rawValue).sendError(%ld, \"%@\")", id, error)

@@ -50,7 +50,7 @@ export type AwsomeWalletFeature = {
 export class AwsomeWalletWallet implements Wallet {
     readonly #listeners: { [E in StandardEventsNames]?: StandardEventsListeners[E][] } = {};
     readonly #version = '1.0.0' as const;
-    readonly #name = 'AwsomeWallet' as const;
+    readonly #name = 'MetaCrypto Wallet' as const;
     readonly #icon = icon;
     #account: AwsomeWalletWalletAccount | null = null;
     readonly #awsWallet: AwsomeWallet;

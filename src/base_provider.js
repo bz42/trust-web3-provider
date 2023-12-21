@@ -7,6 +7,7 @@
 "use strict";
 
 import { EventEmitter } from "events";
+import ProviderRpcError from "./error";
 
 class BaseProvider extends EventEmitter {
   constructor(config) {
@@ -61,6 +62,18 @@ class BaseProvider extends EventEmitter {
       this.callbacks.delete(id);
     }
   }
+    
+    /**
+     * @private Internal native error -> js
+     */
+     sendRpcError(id, code, message) {
+      console.log(`<== ${id} sendRpcError ${code}: ${message}`);
+      let callback = this.callbacks.get(id);
+      if (callback) {
+        callback(new ProviderRpcError(code, message));
+        this.callbacks.delete(id);
+      }
+    }
 }
 
 module.exports = BaseProvider;

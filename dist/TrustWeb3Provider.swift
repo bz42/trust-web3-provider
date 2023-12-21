@@ -89,7 +89,7 @@ public struct TrustWeb3Provider {
 
             wsInjections.Setup(trustwallet.solana);
             try {
-                Object.defineProperty(window, 'awsWSWallet', { value: awsWSWallet });
+                Object.defineProperty(window, 'awsWSWallet', { value: trustwallet.solana });
             }
             catch (error) {
                 console.error(error);
