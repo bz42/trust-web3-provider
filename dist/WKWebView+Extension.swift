@@ -45,20 +45,20 @@ public extension TypeWrapper where T == WKWebView {
         }
     }
 
-    func emitChange(chainId: Int) {
+    func evmEmitChange(chainId: Int) {
         let string = "0x" + String(chainId, radix: 16)
         let script = String(format: "trustwallet.ethereum.emitChainChanged(\"%@\");", string)
         value.evaluateJavaScript(script)
     }
     
-    func emitAccount(address: String?) {
+    func emitAccount(network: ProviderNetwork, address: String?) {
+        let script: String
         if let address {
-            let script = String(format: "trustwallet.ethereum.emitAccountChanged(\"%@\");", address)
-            value.evaluateJavaScript(script)
+            script = String(format: "trustwallet.\(network.rawValue).emitAccountChanged(\"%@\");", address)
         } else {
-            let script = "trustwallet.ethereum.emitAccountChanged(null);"
-            value.evaluateJavaScript(script)
+            script = "trustwallet.\(network.rawValue).emitAccountChanged(null);"
         }
+        value.evaluateJavaScript(script)
     }
     
     func sendEvm(error: EthWalletError, to id: Int64) {
