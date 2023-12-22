@@ -104,7 +104,7 @@ class TrustWeb3Provider extends BaseProvider {
       default:
         throw new ProviderRpcError(
           4200,
-          `Trust does not support calling ${payload.method} synchronously without a callback. Please provide a callback parameter to call ${payload.method} asynchronously.`
+          `Wallet does not support calling ${payload.method} synchronously without a callback. Please provide a callback parameter to call ${payload.method} asynchronously.`
         );
     }
     return response;
@@ -194,7 +194,7 @@ class TrustWeb3Provider extends BaseProvider {
         case "eth_subscribe":
           throw new ProviderRpcError(
             4200,
-            `Trust does not support calling ${payload.method}. Please use your own solution`
+            `Wallet does not support calling ${payload.method}. Please use your own solution`
           );
         default:
           // call upstream rpc

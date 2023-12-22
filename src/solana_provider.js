@@ -101,9 +101,6 @@ class TrustSolanaWeb3Provider extends BaseProvider {
       .then((signatureEncoded) =>
         this.mapSignedTransaction(tx, signatureEncoded)
       )
-      .catch((error) => {
-        console.log(`<== Error: ${error}`);
-      });
   }
 
   signAllTransactions(txs) {
@@ -142,9 +139,6 @@ class TrustSolanaWeb3Provider extends BaseProvider {
           this.mapSignedTransaction(txs[i], signature)
         )
       )
-      .catch((error) => {
-        console.log(`<== Error: ${error}`);
-      });
   }
 
   sendRawTransaction(signedTx, options) {
@@ -154,9 +148,6 @@ class TrustSolanaWeb3Provider extends BaseProvider {
       .then((signatureEncoded) => {
         return bs58.decode(signatureEncoded);
       })
-      .catch((error) => {
-        console.log(`<== Error: ${error}`);
-      });
   }
 
   signAndSendTransaction(tx, options) {
@@ -207,7 +198,7 @@ class TrustSolanaWeb3Provider extends BaseProvider {
           // throw errors for unsupported methods
           throw new ProviderRpcError(
             4200,
-            `Trust does not support calling ${payload.method} yet.`
+            `Wallet does not support calling ${payload.method} yet.`
           );
       }
     });
